@@ -120,7 +120,7 @@ class jsOverlay {
             let imgObj = new Image();
             imgObj.src = imgLoaded.src
             let optImgDim = this.getOptimizedElSize((optHtWd.width - 60), (optHtWd.height - 30), imgObj.width, imgObj.height);
-            let contMargLeft = 1 < totImgs ? ((optHtWd.width - optImgDim.width) / 2) - 23 : ((optHtWd.width - optImgDim.width) / 2);
+            let contMargLeft = 1 < totImgs ? ((optHtWd.width - optImgDim.width) / 2) - 23 : ((optHtWd.width - optImgDim.width) / 2) - 5;
             imgLoaded.style.height = optImgDim.height + 'px';
             imgLoaded.style.width = optImgDim.width + 'px';
             imgLoaded.style.marginLeft = contMargLeft + 'px';
@@ -289,7 +289,7 @@ class jsOverlay {
         imgToload.addEventListener('load', e => {
 
             let optImgDim = this.getOptimizedElSize((modalHtWd[1] - 60), (modalHtWd[0] - 30), e.target.width, e.target.height)
-            let contMargLeft = 1 < imgArr.length ? ((modalHtWd[1] - optImgDim.width) / 2) - 23 : ((modalHtWd[1] - optImgDim.width) / 2);
+            let contMargLeft = 1 < imgArr.length ? ((modalHtWd[1] - optImgDim.width) / 2) - 23 : ((modalHtWd[1] - optImgDim.width) / 2) - 5;
             if (undefined != elContainer.querySelector('img')) {
                 elContainer.removeChild(elContainer.querySelector('img'));
             }
