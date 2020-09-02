@@ -47,6 +47,11 @@ class jsOverlay {
         overlayEl.style = `position:fixed;height:${overlayHeight}px;width:${overlayWidth}px;background-color:rgba(0,0,0,.6);z-index:100000;top:0%;left:0%;right:0%;bottom:0%;`;
 
 
+        let elContainer = document.createElement('div');
+        elContainer.id = 'js-modal-el-container';
+        elContainer.style = `border:1px solid rgba(0,0,0,1);text-align:center;left:${((overlayWidth - 5) - optHtWd.width) / 2}px;top:${(overlayHeight - optHtWd.height) / 2}px;width:${optHtWd.width}px;height:${optHtWd.height}px;position:absolute;float:left;background-color:rgba(255,255,255,1);`;
+        overlayEl.appendChild(elContainer);
+
         let closeBtn = document.createElement('span');
         closeBtn.id = "overlay-close-btn";
         closeBtn.title = "Close";
@@ -55,20 +60,16 @@ class jsOverlay {
         overlayEl.appendChild(closeBtn);
         closeBtn.addEventListener('click', () => {
             document.body.removeChild(overlayEl);
-            document.body.style.overflow = '';
-            document.body.style.margin = ''
             document.querySelector('head').removeChild(scrollCss);
+
         });
 
-        let elContainer = document.createElement('div');
-        elContainer.id = 'js-modal-el-container';
-        elContainer.style = `border:1px solid rgba(0,0,0,1);text-align:center;left:${((overlayWidth - 5) - optHtWd.width) / 2}px;top:${(overlayHeight - optHtWd.height) / 2}px;width:${optHtWd.width}px;height:${optHtWd.height}px;position:absolute;float:left;background-color:rgba(255,255,255,1);`;
-        overlayEl.appendChild(elContainer);
+
         if (undefined != param.elContent) {
             elContainer.innerHTML = param.elContent
             document.body.insertBefore(overlayEl, document.body.firstChild);
         } else if (undefined != param.imgGallery) {
-            this.loadGallery(overlayEl, elContainer, param, [optHtWd.height, optHtWd.width]);
+            this.loadGallery(overlayEl, closeBtn, elContainer, param, [optHtWd.height, optHtWd.width]);
 
         } else if (undefined != param.iframeUrl) {
             elContainer.innerHTML = `<iframe height="${optHtWd.height}" width="${optHtWd.width}" frameBorder= "0"   src="${param.iframeUrl}" ></iframe>`;
@@ -95,6 +96,7 @@ class jsOverlay {
         let overlayWidth = window.innerWidth + 1;
         let overlayHeight = window.innerHeight + 1;
         let loadingDiv = elContainer.querySelector('#content-loading');
+        let imgLoading = overlayEl.querySelector('#img-loading');
 
         let optHtWd = this.getOptimizedElSize(window.innerWidth, window.innerHeight, htWdArr[1], htWdArr[0]);
 
@@ -105,10 +107,7 @@ class jsOverlay {
         closeBtn.style.left = (((overlayWidth - optHtWd.width) / 2) + optHtWd.width - 8) + 'px'
         closeBtn.style.top = (((overlayHeight - optHtWd.height) / 2) - 25) + 'px'
 
-        if (undefined != loadingDiv) {
-            loadingDiv.style.marginTop = ((optHtWd.height - 46) / 2) + 'px';
-            loadingDiv.style.marginLeft = ((optHtWd.width - 46) / 2) + 'px';
-        }
+
 
         let imgLoaded = elContainer.querySelector('img')
 
@@ -119,20 +118,19 @@ class jsOverlay {
 
             let imgObj = new Image();
             imgObj.src = imgLoaded.src
-            let optImgDim = this.getOptimizedElSize((optHtWd.width - 60), (optHtWd.height - 30), imgObj.width, imgObj.height);
-            let contMargLeft = 1 < totImgs ? ((optHtWd.width - optImgDim.width) / 2) - 23 : ((optHtWd.width - optImgDim.width) / 2) - 5;
+            let optImgDim = this.getOptimizedElSize((optHtWd.width - 60), (optHtWd.height - 60), imgObj.width, imgObj.height, 1);
+            let contMargLeft = 1 < totImgs ? ((optHtWd.width - optImgDim.width) / 2) - 26 : (optHtWd.width - optImgDim.width) / 2;
             imgLoaded.style.height = optImgDim.height + 'px';
             imgLoaded.style.width = optImgDim.width + 'px';
             imgLoaded.style.marginLeft = contMargLeft + 'px';
             imgLoaded.style.marginTop = ((optHtWd.height - optImgDim.height) / 2) + 'px';
 
             imgTitle.style.marginTop = (optHtWd.height - 25) + 'px'
-            imgTitle.style.width = (optHtWd.width - 60) + 'px';
+            imgTitle.style.width = optHtWd.width + 'px';
 
-            console.log(totImgs);
-            if (1 < totImgs) {
-                elContainer.querySelector('#next-btn').style.marginTop = (optHtWd.height - 23) + 'px';
-                elContainer.querySelector('#prev-btn').style.marginTop = (optHtWd.height - 23) + 'px';
+            if (2 <= totImgs) {
+                elContainer.querySelector('#next-btn').style.marginTop = ((optHtWd.height - 25) / 2) + 'px';
+                elContainer.querySelector('#prev-btn').style.marginTop = ((optHtWd.height - 25) / 2) + 'px';
             }
 
         }
@@ -141,6 +139,11 @@ class jsOverlay {
         elContainer.style.top = ((overlayHeight - optHtWd.height) / 2) + 'px';
         elContainer.style.height = optHtWd.height + 'px';
         elContainer.style.width = optHtWd.width + 'px';
+
+        if (undefined != imgLoading) {
+            imgLoading.style.marginTop = ((window.innerHeight - 46) / 2) + 'px';
+            imgLoading.style.marginLeft = ((window.innerWidth - 46) / 2) + 'px';
+        }
 
     }
 
@@ -218,9 +221,9 @@ class jsOverlay {
     *@param param Setting parameter
     *@param modalHtWd Modal height width array
     */
-    loadGallery(overlayEl, elContainer, param, modalHtWd) {
+    loadGallery(overlayEl, closeBtn, elContainer, param, modalHtWd) {
 
-        let imgGallery = Array.from(param.imgGallery);
+        let imgGallery = Array.from(document.querySelectorAll(param.imgGallery));
 
         imgGallery.forEach((x, i) => {
 
@@ -231,17 +234,21 @@ class jsOverlay {
                     if (null == document.querySelector('#js-modal-overlay')) {
                         document.body.insertBefore(overlayEl, document.body.firstChild);
                     }
-                    this.loadImg(elContainer, y, a, galImgs, [elContainer.offsetHeight, elContainer.offsetWidth]);
+                    this.loadImg(overlayEl, closeBtn, elContainer, y, a, galImgs, [elContainer.offsetHeight, elContainer.offsetWidth]);
                 })
             })
         })
     }
 
-    loadImg(elContainer, img, imgNum, imgArr, modalHtWd) {
+    loadImg(overlayEl, closeBtn, elContainer, img, imgNum, imgArr, modalHtWd) {
 
         let nxtImg = imgArr.length - 1 > imgNum ? imgNum + 1 : 0;
         let prevImg = 0 < imgNum ? imgNum - 1 : imgArr.length - 1;
-        let imgTitleCont = 0 < img.title.length ? img.title : '';
+        let imgOfTot = 1 < imgArr.length ? `<font style="font-size:11px;" > (${imgNum + 1}/${imgArr.length})</font>` : '';
+        let imgTitleCont = 0 < img.title.length ? img.title + imgOfTot : '' + imgOfTot;
+        closeBtn.style.display = 'none';
+        elContainer.style.display = 'none'
+
         let imgToload = new Image();
         imgToload.setAttribute('data-img-count', imgArr.length)
         imgToload.src = img.src;
@@ -251,21 +258,24 @@ class jsOverlay {
         if (undefined == elContainer.querySelector('#img-title')) {
             let imgTitle = document.createElement('span');
             imgTitle.id = 'img-title';
-            imgTitle.style = `font-size:15px;color:rgba(0,0,0,1);line-height:1.5;font-family:'Courier New', Courier, monospace;text-align:center;position:absolute;left:27px;height:25px;width:${modalHtWd[1] - 60}px;margin-top:${modalHtWd[0] - 25}px;z-index:100;`;
+            imgTitle.style = `overflow:scroll;font-size:15px;color:rgba(0,0,0,1);line-height:1.5;font-family:'Courier New', Courier, monospace;text-align:center;position:absolute;left:0px;height:25px;width:${modalHtWd[1]}px;margin-top:${modalHtWd[0] - 25}px;z-index:100;`;
             imgTitle.innerHTML = imgTitleCont;
             elContainer.appendChild(imgTitle);
         } else {
             elContainer.querySelector('#img-title').innerHTML = imgTitleCont;
         }
-        if (imgArr.length > 1) {
+
+        if (2 <= imgArr.length) {
             if (undefined == elContainer.querySelector('#prev-btn')) {
                 let prevBtn = document.createElement('span');
                 prevBtn.id = 'prev-btn';
                 prevBtn.title = 'Previous Image'
                 prevBtn.innerHTML = '<'
                 prevBtn.setAttribute('data-img-num', prevImg);
-                prevBtn.style = `color:rgba(255,255,255,1);background-color:rgba(0,0,0,1);font-size:20px;cursor:pointer;font-family:'Courier New', Courier, monospace;text-align:center;line-height: 1.1;margin-left:2px;margin-top:${modalHtWd[0] - 23}px;border-radius:20px;width:20px;height:20px;float:left;z-index:100;`;
-                prevBtn.addEventListener('click', e => this.loadImg(elContainer, imgArr[e.target.getAttribute('data-img-num')], parseInt(e.target.getAttribute('data-img-num')), imgArr, [elContainer.offsetHeight, elContainer.offsetWidth]));
+                prevBtn.style = `color:rgba(0,0,0,1);border:1px solid rgba(0,0,0,1);font-size:20px;cursor:pointer;font-family:'Courier New', Courier, monospace;text-align:center;line-height: 1.1;margin-left:2px;margin-top:${(modalHtWd[0] - 25) / 2}px;width:20px;height:20px;float:left;z-index:100;`;
+                prevBtn.addEventListener('mouseover', e => e.target.style.boxShadow = '1px 1px 5px 1px rgba(0,0,0,1)')
+                prevBtn.addEventListener('mouseleave', e => e.target.style.boxShadow = '')
+                prevBtn.addEventListener('click', e => this.loadImg(overlayEl, closeBtn, elContainer, imgArr[parseInt(e.target.getAttribute('data-img-num'))], parseInt(e.target.getAttribute('data-img-num')), imgArr, [elContainer.offsetHeight, elContainer.offsetWidth]));
                 elContainer.appendChild(prevBtn)
             } else {
                 elContainer.querySelector('#prev-btn').setAttribute('data-img-num', prevImg)
@@ -276,9 +286,11 @@ class jsOverlay {
                 nextBtn.id = 'next-btn';
                 nextBtn.innerHTML = '>'
                 nextBtn.title = 'Next Image'
-                nextBtn.style = `color:rgba(255,255,255,1);background-color:rgba(0,0,0,1);font-size:20px;cursor:pointer;font-family:'Courier New', Courier, monospace;text-align:center;line-height: 1.1;margin-right:2px;margin-top:${modalHtWd[0] - 23}px;border-radius:20px;width:20px;height:20px;float:right;z-index:100;`;
+                nextBtn.style = `color:rgba(0,0,0,1);border:1px solid rgba(0,0,0,1);font-size:20px;cursor:pointer;font-family:'Courier New', Courier, monospace;text-align:center;line-height: 1.1;margin-right:2px;margin-top:${(modalHtWd[0] - 25) / 2}px;width:20px;height:20px;float:right;z-index:100;`;
                 nextBtn.setAttribute('data-img-num', nxtImg)
-                nextBtn.addEventListener('click', e => this.loadImg(elContainer, imgArr[e.target.getAttribute('data-img-num')], parseInt(e.target.getAttribute('data-img-num')), imgArr, [elContainer.offsetHeight, elContainer.offsetWidth]));
+                nextBtn.addEventListener('mouseover', e => e.target.style.boxShadow = '1px 1px 5px 1px rgba(0,0,0,1)')
+                nextBtn.addEventListener('mouseleave', e => e.target.style.boxShadow = '')
+                nextBtn.addEventListener('click', e => this.loadImg(overlayEl, closeBtn, elContainer, imgArr[parseInt(e.target.getAttribute('data-img-num'))], parseInt(e.target.getAttribute('data-img-num')), imgArr, [elContainer.offsetHeight, elContainer.offsetWidth]));
                 elContainer.appendChild(nextBtn)
             } else {
                 elContainer.querySelector('#next-btn').setAttribute('data-img-num', nxtImg);
@@ -286,16 +298,61 @@ class jsOverlay {
 
         }
 
+        if (undefined != elContainer.querySelector('img')) {
+            elContainer.removeChild(elContainer.querySelector('img'));
+        }
+
+        let loadingDivCir = elContainer.querySelector('#content-loading');
+
+        if (null == loadingDivCir) {
+
+            loadingDivCir = document.createElement('div');
+            loadingDivCir.id = `img-loading`;
+            loadingDivCir.style = `display:inline-block;float:left;position:relative;margin-left:${(window.innerWidth - 46) / 2}px;margin-top:${(window.innerHeight - 46) / 2}px;height:40px;width:40px;border-radius:50%;border-color:rgba(255,255,255,1);border-style: solid; border-width: 3px;z-index:1100; `;
+            loadingDivCir.setAttribute('data-wait', 'left');
+            overlayEl.appendChild(loadingDivCir);
+
+
+
+            var loadingInt = setInterval(() => {
+                switch (loadingDivCir.getAttribute('data-wait')) {
+                    case 'left':
+                        loadingDivCir.setAttribute('data-wait', 'top');
+                        loadingDivCir.style.borderColor = 'rgba(255,255,255,1)';
+                        loadingDivCir.style.borderTop = '3px solid  rgba(0,0,0,1)';
+                        break;
+                    case 'top':
+                        loadingDivCir.setAttribute('data-wait', 'right');
+                        loadingDivCir.style.borderColor = 'rgba(255,255,255,1)';
+                        loadingDivCir.style.borderRight = '3px solid  rgba(0,0,0,1)';
+                        break;
+                    case 'right':
+                        loadingDivCir.setAttribute('data-wait', 'bottom');
+                        loadingDivCir.style.borderColor = 'rgba(255,255,255,1)';
+                        loadingDivCir.style.borderBottom = '3px solid  rgba(0,0,0,1)';
+
+                        break;
+                    case 'bottom':
+                        loadingDivCir.setAttribute('data-wait', 'left');
+                        loadingDivCir.style.borderColor = 'rgba(255,255,255,1)';
+                        loadingDivCir.style.borderLeft = '3px solid  rgba(0,0,0,1)';
+                        break;
+                }
+
+            }, 400);
+        }
+
         imgToload.addEventListener('load', e => {
 
-            let optImgDim = this.getOptimizedElSize((modalHtWd[1] - 60), (modalHtWd[0] - 30), e.target.width, e.target.height)
-            let contMargLeft = 1 < imgArr.length ? ((modalHtWd[1] - optImgDim.width) / 2) - 23 : ((modalHtWd[1] - optImgDim.width) / 2) - 5;
-            if (undefined != elContainer.querySelector('img')) {
-                elContainer.removeChild(elContainer.querySelector('img'));
-            }
+            overlayEl.removeChild(loadingDivCir);
+
+            clearInterval(loadingInt);
+            closeBtn.style.display = '';
+            elContainer.style.display = '';
+            let optImgDim = this.getOptimizedElSize((modalHtWd[1] - 60), (modalHtWd[0] - 60), e.target.width, e.target.height, 1)
+            let contMargLeft = 1 < imgArr.length ? ((modalHtWd[1] - optImgDim.width) / 2) - 26 : (modalHtWd[1] - optImgDim.width) / 2;
             e.target.style = `position:relative;border:1px solid rgba(0,0,0,1);float:left;height:${optImgDim.height}px;width:${optImgDim.width}px;margin-left:${contMargLeft}px;margin-top:${(modalHtWd[0] - optImgDim.height) / 2}px;`;
             elContainer.appendChild(e.target);
-
 
         });
 
@@ -308,13 +365,14 @@ class jsOverlay {
     *@param scrnHt Maximum height available
     *@param elActWd Original width of el
     *@param elActHt Original height of el
+    *@param alwdMargPrcnt Optional allowed container percent
     *
     */
 
-    getOptimizedElSize(scrnWd, scrnHt, elActWd, elActHt) {
+    getOptimizedElSize(scrnWd, scrnHt, elActWd, elActHt, alwdElPrcnt) {
 
         let elScrnHtRatio = 0, elScrnWdRatio = 0, optElHt = 0, optElWd = 0;
-        let elPrcnt = 0.89;
+        let elPrcnt = undefined != alwdElPrcnt ? alwdElPrcnt : 0.89;
         let margPrcnt = 1 - elPrcnt;
         if ((elActWd >= scrnWd) && (elActHt >= scrnHt)) {
             if (elActWd >= elActHt) {
