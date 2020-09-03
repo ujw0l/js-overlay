@@ -49,7 +49,7 @@ class jsOverlay {
 
         let elContainer = document.createElement('div');
         elContainer.id = 'js-modal-el-container';
-        elContainer.style = `border:1px solid rgba(0,0,0,1);text-align:center;left:${((overlayWidth - 5) - optHtWd.width) / 2}px;top:${(overlayHeight - optHtWd.height) / 2}px;width:${optHtWd.width}px;height:${optHtWd.height}px;position:absolute;float:left;background-color:rgba(255,255,255,1);`;
+        elContainer.style = `overflow-auto;border:1px solid rgba(0,0,0,1);text-align:center;left:${((overlayWidth - 5) - optHtWd.width) / 2}px;top:${(overlayHeight - optHtWd.height) / 2}px;width:${optHtWd.width}px;height:${optHtWd.height}px;position:absolute;float:left;background-color:rgba(255,255,255,1);`;
         overlayEl.appendChild(elContainer);
 
         let closeBtn = document.createElement('span');
