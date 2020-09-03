@@ -38,28 +38,28 @@ js-overlay.js
 const overlay =  new jsOverlay();
 
 For Content viewer 
-overlay->createOverlay({ 
+overlay.createOverlay({ 
   elContent:'String', (String, content to be loaded in modal)
   containerHt: Number, (Number, Modal height.Default 500)
   containerWd: Number, (Number, Modal Width.Default 650)
   })
 
 For Image viewer 
-overlay->createOverlay({ 
+overlay.createOverlay({ 
   imgGallery:'seletor/s', (String, parent container selector/s of Image/s)
   containerHt: Number, (Number, Modal height.Default 500)
   containerWd: Number, (Number, Modal Width.Default 650)
   })
 
 For Iframe viewer 
-overlay->createOverlay({ 
+overlay.createOverlay({ 
   iframeUrl:'String', (String,  URL of page to be loaded)
   containerHt: Number, (Number, Modal height.Default 500)
   containerWd: Number, (Number, Modal Width.Default 650)
   })
 
 For AJAX viewer 
-overlay->createOverlay({ 
+overlay.createOverlay({ 
   ajaxUrl: 'String',(String, Url Where data to be sent and get reponse from ) 
   ajaxData: Any,(Any, Data to be sent to server) 
   ajaxMethod: 'String': (String,  GET or POSt method, default GET )
