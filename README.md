@@ -61,7 +61,7 @@ overlay.createOverlay({
 For AJAX viewer 
 overlay.createOverlay({ 
   ajaxUrl: 'String',(String, Url Where data to be sent and get reponse from ) 
-  ajaxData: Any,(Any, Data to be sent to server) 
+  ajaxData: 'String',(String, Data to be sent to server) 
   ajaxMethod: 'String': (String,  GET or POSt method, default GET )
   containerHt: Number, (Number, Modal height.Default 500)
   containerWd: Number, (Number, Modal Width.Default 650)
