@@ -81,6 +81,11 @@ class jsOverlay {
         }
 
         window.addEventListener('resize', () => this.adjustOverlay(overlayEl, elContainer, closeBtn, [modalHt, modalWd]));
+        window.addEventListener('keydown', e => {
+            if ('Escape' === e.code) {
+                closeBtn.click();
+            }
+        })
     }
 
     /*
