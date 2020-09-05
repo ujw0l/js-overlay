@@ -145,6 +145,15 @@ class jsOverlay {
             imgLoading.style.marginLeft = ((window.innerWidth - 46) / 2) + 'px';
         }
 
+        if (undefined != elContainer.querySelector('iframe')) {
+            elContainer.querySelector('iframe').height = optHtWd.height;
+            elContainer.querySelector('iframe').width = optHtWd.width;
+        };
+        if (undefined != loadingDiv) {
+            loadingDiv.style.marginTop = ((optHtWd.height - 46) / 2) + 'px';
+            loadingDiv.style.marginLeft = ((optHtWd.width - 46) / 2) + 'px';
+        }
+
     }
 
     /*
@@ -225,11 +234,11 @@ class jsOverlay {
 
         let imgGallery = Array.from(document.querySelectorAll(param.imgGallery));
 
-        imgGallery.forEach((x, i) => {
+        imgGallery.map((x, i) => {
 
             let galImgs = Array.from(x.querySelectorAll('img'));
 
-            galImgs.forEach((y, a) => {
+            galImgs.map((y, a) => {
                 y.addEventListener('click', e => {
                     if (null == document.querySelector('#js-modal-overlay')) {
                         document.body.insertBefore(overlayEl, document.body.firstChild);
