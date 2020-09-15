@@ -20,7 +20,7 @@ class jsOverlay {
         }
     }
 
-    /*
+    /** 
     * Function to create overlay
     *
     *@param param1    Modal setting parameter 
@@ -88,12 +88,13 @@ class jsOverlay {
         })
     }
 
-    /*
+    /** 
     *
     *adjust overlay and component on resize
     *
     *@param overlayEl Modal element
     *@param containerEl Container element
+    *@param closeBtn close button element
     *@param htWdArr content container height and width
     */
     adjustOverlay(overlayEl, elContainer, closeBtn, htWdArr) {
@@ -161,7 +162,7 @@ class jsOverlay {
 
     }
 
-    /*
+    /** 
     *
     *adjust overlay and component on resize
     *
@@ -228,9 +229,11 @@ class jsOverlay {
         xhttp.send(dataToSend);
     }
 
-    /*
+    /** 
     *Function to disolay image/images
     *
+    * @param overlayEl Overlay element
+    * @param closeBtn Close button element
     *@param elContainer Modal container
     *@param param Setting parameter
     *@param modalHtWd Modal height width array
@@ -372,7 +375,7 @@ class jsOverlay {
 
     }
 
-    /*
+    /** 
     *Optimize el dimension for viewing 
     * 
     *@param scrnWd Maximum width available
