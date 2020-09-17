@@ -49,7 +49,7 @@ class jsOverlay {
 
         let elContainer = document.createElement('div');
         elContainer.id = 'js-modal-el-container';
-        elContainer.style = `overflow-auto;border:1px solid rgba(0,0,0,1);text-align:center;left:${((overlayWidth - 5) - optHtWd.width) / 2}px;top:${(overlayHeight - optHtWd.height) / 2}px;width:${optHtWd.width}px;height:${optHtWd.height}px;position:absolute;float:left;background-color:rgba(255,255,255,1);`;
+        elContainer.style = `overflow:auto;border:1px solid rgba(0,0,0,1);text-align:center;left:${((overlayWidth - 5) - optHtWd.width) / 2}px;top:${(overlayHeight - optHtWd.height) / 2}px;width:${optHtWd.width}px;height:${optHtWd.height}px;position:absolute;float:left;background-color:rgba(255,255,255,1);`;
         overlayEl.appendChild(elContainer);
 
         let closeBtn = document.createElement('span');
@@ -61,6 +61,7 @@ class jsOverlay {
         closeBtn.addEventListener('click', () => {
             document.body.removeChild(overlayEl);
             document.querySelector('head').removeChild(scrollCss);
+            document.body.style.overflow = '';
 
         });
 
@@ -113,11 +114,9 @@ class jsOverlay {
         closeBtn.style.left = (((overlayWidth - optHtWd.width) / 2) + optHtWd.width - 8) + 'px'
         closeBtn.style.top = (((overlayHeight - optHtWd.height) / 2) - 25) + 'px'
 
+        let imgLoaded = elContainer.querySelector('#js-overlay-img')
 
-
-        let imgLoaded = elContainer.querySelector('img')
-
-        if (undefined != imgLoaded) {
+        if (null != imgLoaded) {
 
             let totImgs = parseInt(imgLoaded.getAttribute('data-img-count'));
             let imgTitle = elContainer.querySelector('#img-title');
@@ -230,7 +229,7 @@ class jsOverlay {
     }
 
     /** 
-    *Function to disolay image/images
+    *Function to display image/images
     *
     * @param overlayEl Overlay element
     * @param closeBtn Close button element
@@ -329,8 +328,6 @@ class jsOverlay {
             loadingDivCir.setAttribute('data-wait', 'left');
             overlayEl.appendChild(loadingDivCir);
 
-
-
             var loadingInt = setInterval(() => {
                 switch (loadingDivCir.getAttribute('data-wait')) {
                     case 'left':
@@ -360,14 +357,13 @@ class jsOverlay {
         }
 
         imgToload.addEventListener('load', e => {
-
             overlayEl.removeChild(loadingDivCir);
-
             clearInterval(loadingInt);
             closeBtn.style.display = '';
             elContainer.style.display = '';
             let optImgDim = this.getOptimizedElSize((modalHtWd[1] - 60), (modalHtWd[0] - 60), e.target.width, e.target.height, 1)
             let contMargLeft = 1 < imgArr.length ? ((modalHtWd[1] - optImgDim.width) / 2) - 26 : (modalHtWd[1] - optImgDim.width) / 2;
+            e.target.id = `js-overlay-img`;
             e.target.style = `position:relative;border:1px solid rgba(0,0,0,1);float:left;height:${optImgDim.height}px;width:${optImgDim.width}px;margin-left:${contMargLeft}px;margin-top:${(modalHtWd[0] - optImgDim.height) / 2}px;`;
             elContainer.appendChild(e.target);
 
