@@ -1,6 +1,6 @@
 {
   "name": "js-overlay",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "JS library that lets user to view image gallery, content, iframe content and ajax content in modal box",
   "main": "js-overlay.js",
   "repository": {

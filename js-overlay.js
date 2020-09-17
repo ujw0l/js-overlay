@@ -263,7 +263,8 @@ class jsOverlay {
         let imgOfTot = 1 < imgArr.length ? `<font style="font-size:11px;" > (${imgNum + 1}/${imgArr.length})</font>` : '';
         let imgTitleCont = 0 < img.title.length ? img.title + imgOfTot : '' + imgOfTot;
         closeBtn.style.display = 'none';
-        elContainer.style.display = 'none'
+        elContainer.style.display = 'none';
+        elContainer.style.overflow = '';
 
         let imgToload = new Image();
         imgToload.setAttribute('data-img-count', imgArr.length)
