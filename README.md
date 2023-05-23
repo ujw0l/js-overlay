@@ -15,7 +15,7 @@
 
 ### 🏠 [Homepage](https://ujw0l.github.io/js-overlay)
 
-### ✨ [Demo](https://ujw0l.github.io/js-overlay)
+### ✨ [Demo](https://ujw0l.github.io/js-overlay1)
 
 ## Install
 
@@ -26,9 +26,13 @@ npm i js-overlay
 ## Script Tag 
 
 ```sh
-Dowload and include following file:
 
-js-overlay.js
+Download and include file
+<script type:"text/javascript" src="js-overlay.js"></script>
+
+or 
+
+<script type:"text/javascript" src="js-overlay.min.js"></script>
 
 ```
 
@@ -46,7 +50,7 @@ overlay.createOverlay({
 
 For Image viewer 
 overlay.createOverlay({ 
-  imgGallery:'seletor/s', (String, parent container selector/s of Image/s)
+  imgGallery:'Selector/s', (String, parent container selector/s of Image/s)
   containerHt: Number, (Number, Modal height.Default 500)
   containerWd: Number, (Number, Modal Width.Default 650)
   })
@@ -89,9 +93,15 @@ Contributions, issues and feature requests are welcome!<br />Feel free to check 
 
 Give a ⭐️ if this project helped you!
 
-<a href="https://www.patreon.com/UjW0L">
+<ul>
+<li>
+<a href="https://www.patreon.com/ujw0l">
   <img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" width="160">
 </a>
+</li>
+<li>
+<a href="https://www.buymeacoffee.com/ujw0l" title=" Buy me Beer"> 🍺 </a>
+</li>
+</ul>
 
 ***
-_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
